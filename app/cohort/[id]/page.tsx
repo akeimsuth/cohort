@@ -78,7 +78,7 @@ export default function CohortRoom() {
       const now = new Date().getTime()
       const end = cohort.endDate.toDate().getTime()
       const difference = end - now
-      console.log("Difference: ",difference);
+      console.log("Difference: ", difference);
       if (difference > 0) {
         const days = Math.floor(difference / (1000 * 60 * 60 * 24))
         const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
@@ -124,6 +124,19 @@ export default function CohortRoom() {
 
     loadCohort()
   }, [cohortId, router, mounted])
+
+  // Listen to cohort updates in real-time
+  useEffect(() => {
+    if (!mounted || !cohortId) return
+
+    const unsubscribe = onSnapshot(doc(db, "cohorts", cohortId), (doc) => {
+      if (doc.exists()) {
+        setCohort({ id: doc.id, ...doc.data() } as Cohort)
+      }
+    })
+
+    return () => unsubscribe()
+  }, [cohortId, mounted])
 
   // Listen to messages
   useEffect(() => {
