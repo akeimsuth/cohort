@@ -75,7 +75,7 @@ export default function Dashboard() {
   }
 
   const isExpired = (endDate: unknown) => {
-    return new Date() > (endDate as Date)
+    return new Date() > (endDate as Timestamp).toDate()
   }
 
   const formatDate = (date: unknown) => {

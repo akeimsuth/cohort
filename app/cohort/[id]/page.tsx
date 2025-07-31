@@ -78,7 +78,7 @@ export default function CohortRoom() {
       const now = new Date().getTime()
       const end = cohort.endDate.toDate().getTime()
       const difference = end - now
-
+      console.log("Difference: ",difference);
       if (difference > 0) {
         const days = Math.floor(difference / (1000 * 60 * 60 * 24))
         const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
