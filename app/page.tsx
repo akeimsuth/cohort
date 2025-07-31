@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { useAuthState } from "react-firebase-hooks/auth"
 import { auth, db } from "@/lib/firebase"
-import { collection, query, where, onSnapshot, orderBy } from "firebase/firestore"
+import { collection, query, where, onSnapshot, orderBy, Timestamp } from "firebase/firestore"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Plus, Users, Calendar, Target } from "lucide-react"
@@ -78,8 +78,8 @@ export default function Dashboard() {
     return new Date() > (endDate as Date)
   }
 
-  const formatDate = (date: any) => {
-    return date.toDate().toLocaleDateString("en-US", {
+  const formatDate = (date: unknown) => {
+    return (date as Timestamp).toDate().toLocaleDateString("en-US", {
       month: "short",
       day: "numeric",
       year: "numeric",
