@@ -134,7 +134,7 @@ export default function CohortRoom() {
         setCohort({ id: doc.id, ...doc.data() } as Cohort)
       }
     })
-
+    console.log("Cohort updated: ", cohort);
     return () => unsubscribe()
   }, [cohortId, mounted])
 
@@ -451,26 +451,49 @@ export default function CohortRoom() {
               </CardHeader>
               <CardContent className="flex-1 flex flex-col">
                 {/* Messages */}
-                <div className="flex-1 overflow-y-auto space-y-4 mb-4 pr-2">
+                <div className="flex-1 overflow-y-auto space-y-3 mb-4 pr-2">
                   {messages.length === 0 ? (
                     <div className="text-center text-gray-500 py-8">
                       <p>No messages yet. Start the conversation!</p>
                     </div>
                   ) : (
-                    messages.map((message) => (
-                      <div key={message.id} className="space-y-1">
-                        <div className="flex items-center space-x-2">
-                          <span className="text-sm font-medium text-gray-900">{message.senderName}</span>
-                          <span className="text-xs text-gray-500">
-                            {message.timestamp?.toDate().toLocaleTimeString([], {
-                              hour: "2-digit",
-                              minute: "2-digit",
-                            })}
-                          </span>
+                    messages.map((message) => {
+                      const isOwnMessage = user && message.senderId === user.uid
+                      return (
+                        <div key={message.id} className={`flex ${isOwnMessage ? 'justify-end' : 'justify-start'}`}>
+                          <div className={`max-w-xs lg:max-w-md ${isOwnMessage ? 'order-2' : 'order-1'}`}>
+                            {!isOwnMessage && (
+                              <div className="flex items-center space-x-2 mb-1">
+                                <span className="text-xs font-medium text-gray-600">{message.senderName}</span>
+                                <span className="text-xs text-gray-400">
+                                  {message.timestamp?.toDate().toLocaleTimeString([], {
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                  })}
+                                </span>
+                              </div>
+                            )}
+                            <div className={`rounded-2xl px-4 py-2 ${
+                              isOwnMessage 
+                                ? 'bg-blue-600 text-white rounded-br-md' 
+                                : 'bg-gray-100 text-gray-900 rounded-bl-md'
+                            }`}>
+                              <p className="text-sm break-words">{message.text}</p>
+                            </div>
+                            {isOwnMessage && (
+                              <div className="flex justify-end mt-1">
+                                <span className="text-xs text-gray-400">
+                                  {message.timestamp?.toDate().toLocaleTimeString([], {
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                  })}
+                                </span>
+                              </div>
+                            )}
+                          </div>
                         </div>
-                        <p className="text-gray-700 bg-gray-50 rounded-lg px-3 py-2 inline-block">{message.text}</p>
-                      </div>
-                    ))
+                      )
+                    })
                   )}
                 </div>
 
