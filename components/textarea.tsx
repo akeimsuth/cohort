@@ -1,8 +1,14 @@
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
-/* eslint-disable @typescript-eslint/no-explicit-any */
-export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {}
+
+export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+  value: string
+  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void
+  className: string
+  placeholder: string
+  required: boolean
+}
 
 const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(({ className, ...props }, ref) => {
   return (
