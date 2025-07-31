@@ -172,11 +172,19 @@ export default function CohortRoom() {
     if (!cohort || cohort.members.includes(user.uid)) return
 
     try {
+      // Update the cohort document to add the new member
       await updateDoc(doc(db, "cohorts", cohortId), {
         members: arrayUnion(user.uid),
       })
+
+      // Force refresh the cohort data to reflect the change immediately
+      const updatedCohortDoc = await getDoc(doc(db, "cohorts", cohortId))
+      if (updatedCohortDoc.exists()) {
+        setCohort({ id: updatedCohortDoc.id, ...updatedCohortDoc.data() } as Cohort)
+      }
     } catch (error) {
       console.error("Error joining cohort:", error)
+      alert("Failed to join cohort. Please try again.")
     }
   }
 
