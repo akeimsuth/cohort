@@ -30,7 +30,7 @@ interface Cohort {
   id: string
   name: string
   goal: string
-  endDate: any
+  endDate: unknown
   creatorId: string
   members: string[]
 }
@@ -40,7 +40,7 @@ interface Message {
   text: string
   senderId: string
   senderName: string
-  timestamp: any
+  timestamp: unknown
 }
 
 interface Task {
@@ -75,7 +75,7 @@ export default function CohortRoom() {
 
     const updateTimeLeft = () => {
       const now = new Date().getTime()
-      const end = cohort.endDate.toDate().getTime()
+      const end = (cohort.endDate as Date).getTime()
       const difference = end - now
 
       if (difference > 0) {
@@ -240,7 +240,7 @@ export default function CohortRoom() {
   }
 
   const isExpired = () => {
-    return cohort && new Date() > cohort.endDate.toDate()
+    return cohort && new Date() > (cohort.endDate as Date)
   }
 
   const isMember = () => {
@@ -292,7 +292,7 @@ export default function CohortRoom() {
               </div>
               <div className="flex items-center space-x-1">
                 <Calendar className="h-4 w-4" />
-                <span>Ends {cohort.endDate.toDate().toLocaleDateString()}</span>
+                <span>Ends {(cohort.endDate as Date).toLocaleDateString()}</span>
               </div>
             </div>
           </CardHeader>
@@ -393,7 +393,7 @@ export default function CohortRoom() {
                       <Checkbox
                         checked={task.isCompleted}
                         onCheckedChange={() => handleToggleTask(task.id, task.isCompleted)}
-                        disabled={isExpired()}
+                        disabled={isExpired() || false}
                         className="mt-1"
                       />
                       <span className={`text-sm ${task.isCompleted ? "line-through text-gray-500" : "text-gray-900"}`}>
@@ -440,7 +440,7 @@ export default function CohortRoom() {
                         <div className="flex items-center space-x-2">
                           <span className="text-sm font-medium text-gray-900">{message.senderName}</span>
                           <span className="text-xs text-gray-500">
-                            {message.timestamp?.toDate().toLocaleTimeString([], {
+                            {(message.timestamp as Date).toLocaleTimeString([], {
                               hour: "2-digit",
                               minute: "2-digit",
                             })}

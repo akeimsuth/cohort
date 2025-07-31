@@ -154,7 +154,7 @@ export default function CreateCohort() {
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                 <h3 className="font-medium text-blue-900 mb-2">What happens next?</h3>
                 <ul className="text-sm text-blue-800 space-y-1">
-                  <li>• You'll get a shareable invite link</li>
+                  <li>• You will get a shareable invite link</li>
                   <li>• Members can chat and collaborate in real-time</li>
                   <li>• The group automatically archives on the end date</li>
                   <li>• Focus on the goal, not endless engagement</li>

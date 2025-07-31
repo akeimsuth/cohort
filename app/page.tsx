@@ -15,7 +15,7 @@ interface Cohort {
   id: string
   name: string
   goal: string
-  endDate: any
+  endDate: unknown
   creatorId: string
   members: string[]
 }
@@ -74,12 +74,12 @@ export default function Dashboard() {
     }
   }
 
-  const isExpired = (endDate: any) => {
-    return new Date() > endDate.toDate()
+  const isExpired = (endDate: unknown) => {
+    return new Date() > (endDate as Date)
   }
 
-  const formatDate = (date: any) => {
-    return date.toDate().toLocaleDateString("en-US", {
+  const formatDate = (date: unknown) => {
+    return (date as Date).toLocaleDateString("en-US", {
       month: "short",
       day: "numeric",
       year: "numeric",
