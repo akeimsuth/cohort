@@ -78,8 +78,8 @@ export default function Dashboard() {
     return new Date() > (endDate as Date)
   }
 
-  const formatDate = (date: unknown) => {
-    return (date as Date).toLocaleDateString("en-US", {
+  const formatDate = (date: any) => {
+    return date.toDate().toLocaleDateString("en-US", {
       month: "short",
       day: "numeric",
       year: "numeric",

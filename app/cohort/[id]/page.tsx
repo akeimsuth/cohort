@@ -17,6 +17,7 @@ import {
   serverTimestamp,
   updateDoc,
   arrayUnion,
+  Timestamp,
 } from "firebase/firestore"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -30,7 +31,7 @@ interface Cohort {
   id: string
   name: string
   goal: string
-  endDate: unknown
+  endDate: Timestamp
   creatorId: string
   members: string[]
 }
@@ -40,7 +41,7 @@ interface Message {
   text: string
   senderId: string
   senderName: string
-  timestamp: unknown
+  timestamp: Timestamp
 }
 
 interface Task {
@@ -75,7 +76,7 @@ export default function CohortRoom() {
 
     const updateTimeLeft = () => {
       const now = new Date().getTime()
-      const end = (cohort.endDate as Date).getTime()
+      const end = cohort.endDate.toDate().getTime()
       const difference = end - now
 
       if (difference > 0) {
@@ -240,7 +241,7 @@ export default function CohortRoom() {
   }
 
   const isExpired = () => {
-    return cohort && new Date() > (cohort.endDate as Date)
+    return cohort && new Date() > cohort.endDate.toDate()
   }
 
   const isMember = () => {
@@ -292,7 +293,7 @@ export default function CohortRoom() {
               </div>
               <div className="flex items-center space-x-1">
                 <Calendar className="h-4 w-4" />
-                <span>Ends {(cohort.endDate as Date).toLocaleDateString()}</span>
+                <span>Ends {cohort.endDate.toDate().toLocaleDateString()}</span>
               </div>
             </div>
           </CardHeader>
@@ -440,7 +441,7 @@ export default function CohortRoom() {
                         <div className="flex items-center space-x-2">
                           <span className="text-sm font-medium text-gray-900">{message.senderName}</span>
                           <span className="text-xs text-gray-500">
-                            {(message.timestamp as Date).toLocaleTimeString([], {
+                            {message.timestamp?.toDate().toLocaleTimeString([], {
                               hour: "2-digit",
                               minute: "2-digit",
                             })}
